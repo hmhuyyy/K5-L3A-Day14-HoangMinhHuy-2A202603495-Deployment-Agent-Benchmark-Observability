@@ -134,8 +134,13 @@ X-XSS-Protection: 1; mode=block
 
 ### Exercise 3.1 / 3.2: Triển khai Agent Part 6 (`06-lab-complete/`) lên Render
 
-- **Nền tảng chính:** Render (Docker Web Service + Managed Redis / Key Value)
-- **Public URL:** *(Đang hoàn tất deploy trên Render — xem chi tiết và kết quả 4 lệnh tự kiểm trong [DEPLOYMENT.md](DEPLOYMENT.md))*
+- **Nền tảng chính:** Render (Blueprint từ `render.yaml` — Docker Web Service `k5-day14-ai-agent` + Managed Redis `k5-day14-agent-redis`, region Singapore)
+- **Public URL:** https://k5-day14-ai-agent.onrender.com (chi tiết xem [DEPLOYMENT.md](DEPLOYMENT.md))
+- **Kết quả 4 lệnh tự kiểm CP6 (chạy thật trên URL public, không lộ key):**
+  - `GET /health` → **200** (`{"status":"ok","environment":"production","uptime_seconds":244.5}`)
+  - `GET /ready` → **200** (`{"status":"ready","redis":"connected"}`)
+  - `POST /ask` (thiếu `X-API-Key`) → **401** (`{"detail":"Invalid or missing X-API-Key header"}`)
+  - `POST /ask` (có `X-API-Key`) → **200** (`{"question":"Hello","answer":"Tôi là AI agent được deploy lên cloud. Câu hỏi của bạn đã được nhận.",...}`)
 - **Screenshots:** [dashboard.png](screenshots/dashboard.png), [running.png](screenshots/running.png), [test.png](screenshots/test.png)
 
 **So sánh `railway.toml` vs `render.yaml`:**
